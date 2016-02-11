@@ -1,0 +1,47 @@
+<html>
+  <head>
+     <title>Sleep Tracker -- all users</title>
+
+     <link href="static/css/bootstrap.min.css" rel="stylesheet">
+     
+     <script src="static/js/jquery-1.12.0.min.js"></script>
+     <script src="static/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand">Sleep Tracker</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+	    <li><a href='/'>Home</a></li>
+	    <li class='active'><a href='/allusers'>User list</a></li>
+	    <li><a href='/slides'>Slides</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <br><br>
+<div class="container">
+
+     <h1>User list</h1>
+     <table class="table table-hover">
+     <tr><th>Id</th><th>Description</th>
+     {% for cell in results[0].summary_data|unjson %}
+       <th>{{cell[0]}}</th>
+     {% endfor %}
+     </tr>
+     {% for row in results %}
+     <tr>
+       <td><a href='/user?cid={{row.child_id}}'>{{row.child_id}}</a></td>
+       <td><a href='/user?cid={{row.child_id}}'>{{row.description}}</a></td>
+       {% for cell in row.summary_data|unjson %}
+          <td>{{cell[1]}}</td>
+       {% endfor %}
+     </tr>
+     {% endfor %}
+</div>
+  </body>
+</html>

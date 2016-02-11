@@ -1,0 +1,68 @@
+<html>
+  <head>
+     <title>Sleep Tracker -- user details</title>
+     <link href="static/css/bootstrap.min.css" rel="stylesheet">
+     
+     <script src="static/js/jquery-1.12.0.min.js"></script>
+     <script src="static/js/bootstrap.min.js"></script>
+
+     <script src="static/js/highcharts.js"></script>
+     <script src="static/js/highcharts-exporting.js"></script>
+     <script src="static/js/user-charts.js"></script>
+</head>
+<body>    
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand">Sleep Tracker</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+	    <li><a href='/'>Home</a></li>
+	    <li><a href='/allusers'>User list</a></li>
+	    <li class='active'><a>User details</a></li>
+	    <li><a href='/slides'>Slides</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+<br><br>
+
+    {% for user in results %}
+    <div class='container'>
+     <h1>User {{user.child_id}}</h1>
+     <table class="table table-hover">
+       <tr><th colspan="6" ></th></tr>
+       <tr><th colspan="6" style="text-align: center"> "Success" metrics</th></tr>
+     <tr>{% for cell in user.summary_data|unjson %}
+       <th>{{cell[0]}}</th>
+     {% endfor %}</tr>
+     <tr>{% for cell in user.summary_data|unjson %}
+       <td>{{cell[1]}}</td>
+     {% endfor %}</tr>
+     </table>
+
+     <div id="ratechart{{user.child_id}}" 
+	  style="min-width: 310px; height: 400px; margin: 0 auto"></div>     
+     <script language="javascript">
+       setup_rate_chart('ratechart{{user.child_id}}', '{{user.description}}',
+                        {{user.rate_chart_data|safe}});
+     </script>
+    </div>
+     {% endfor %}
+
+     {% if not results %}
+    <div class='container'>
+     <h1>no user with this CID found</h1>
+    </div>
+     {% endif %}
+
+     {% if next_link %}
+    <div class='container'>
+     <a href='{{next_link}}'>Next page...</a>
+    </div>
+     {% endif %}
+     <p>
+  </body>
+</html>
